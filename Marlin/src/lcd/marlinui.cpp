@@ -66,7 +66,7 @@ constexpr uint8_t epps = ENCODER_PULSES_PER_STEP;
   constexpr uint8_t MAX_MESSAGE_LENGTH = 63;
 #endif
 
-#if EITHER(HAS_WIRED_LCD, EXTENSIBLE_UI)
+#if ANY(HAS_WIRED_LCD, EXTENSIBLE_UI, HAS_STATUS_MESSAGE)
   uint8_t MarlinUI::alert_level; // = 0
   char MarlinUI::status_message[MAX_MESSAGE_LENGTH + 1];
 #endif
@@ -1309,6 +1309,10 @@ void MarlinUI::update() {
   ////////////// Status Message //////////////
   ////////////////////////////////////////////
 
+  #ifndef START_OF_UTF8_CHAR
+    #define START_OF_UTF8_CHAR(C) (((C) & 0xC0u) != 0x80U)
+  #endif
+
   #if ENABLED(EXTENSIBLE_UI)
     #include "extui/ui_api.h"
   #endif
@@ -1356,14 +1360,14 @@ void MarlinUI::update() {
       static PGMSTR(service3, "> " SERVICE_NAME_3 "!");
     #endif
     PGM_P msg;
-    if (printingIsPaused())
-      msg = GET_TEXT(MSG_PRINT_PAUSED);
-    #if ENABLED(SDSUPPORT)
-      else if (IS_SD_PRINTING())
-        return set_status(card.longest_filename(), true);
-    #endif
-    else if (print_job_timer.isRunning())
-      msg = GET_TEXT(MSG_PRINTING);
+    // if (printingIsPaused())
+    //   msg = GET_TEXT(MSG_PRINT_PAUSED);
+    // #if ENABLED(SDSUPPORT)
+    //   else if (IS_SD_PRINTING())
+    //     return set_status(card.longest_filename(), true);
+    // #endif
+    // else if (print_job_timer.isRunning())
+    //   msg = GET_TEXT(MSG_PRINTING);
 
     #if SERVICE_INTERVAL_1 > 0
       else if (print_job_timer.needsService(1)) msg = service1;
@@ -1375,9 +1379,9 @@ void MarlinUI::update() {
       else if (print_job_timer.needsService(3)) msg = service3;
     #endif
 
-    else if (!no_welcome)
-      msg = GET_TEXT(WELCOME_MSG);
-    else
+    // else if (!no_welcome)
+    //   msg = GET_TEXT(WELCOME_MSG);
+    // else
       return;
 
     set_status_P(msg, -1);
@@ -1580,10 +1584,10 @@ void MarlinUI::update() {
   #endif
 
 #else // !HAS_DISPLAY
-
   //
   // Send the status line as a host notification
   //
+  #if !HAS_STATUS_MESSAGE
   void MarlinUI::set_status(const char * const message, const bool) {
     TERN(HOST_PROMPT_SUPPORT, host_action_notify(message), UNUSED(message));
   }
@@ -1593,7 +1597,7 @@ void MarlinUI::update() {
   void MarlinUI::status_printf_P(const uint8_t, PGM_P const message, ...) {
     TERN(HOST_PROMPT_SUPPORT, host_action_notify_P(message), UNUSED(message));
   }
-
+  #endif
 #endif // !HAS_DISPLAY
 
 #if ENABLED(SDSUPPORT)
