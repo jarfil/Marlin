@@ -1833,6 +1833,13 @@ void Draw_Status_Area(const bool with_update) {
     DWIN_Draw_Signed_Float(DWIN_FONT_STAT, Color_Bg_Black, 2, 2, 178, 429, dwin_zoffset * 100);
   #endif
 
+  DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 33 + 5 * STAT_CHR_W + 2, 429, F("WWW"));
+  DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 33 + 5 * STAT_CHR_W + 2, 429, ui.status_message);
+  #if HAS_STATUS_MESSAGE
+    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STATUS_Y, ui.status_message);
+    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, F(ui.status_message));
+  #endif
+
   if (with_update) {
     DWIN_UpdateLCD();
     delay(5);
