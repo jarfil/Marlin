@@ -1345,9 +1345,12 @@ void MarlinUI::update() {
 
     finish_status(persist);
 
-    SERIAL_ECHO_MSG("status_message set"); // DEBUG
+    // DEBUG
+    if (has_status())
+      SERIAL_ECHO_MSG("status_message set");
     SERIAL_ECHOPGM_P(message);
     SERIAL_ECHOPGM_P(status_message);
+    // DEBUG
   }
 
   /**
