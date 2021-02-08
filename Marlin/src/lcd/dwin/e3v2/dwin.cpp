@@ -1833,12 +1833,21 @@ void Draw_Status_Area(const bool with_update) {
     DWIN_Draw_Signed_Float(DWIN_FONT_STAT, Color_Bg_Black, 2, 2, 178, 429, dwin_zoffset * 100);
   #endif
 
-  DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 33 + 5 * STAT_CHR_W + 2, 429, F(":.."));
+  DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, F(":..."));
   #if HAS_STATUS_MESSAGE
-    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, F(".:."));
+    DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-21, F(".:.."));
+
+    SERIAL_ECHOPGM_P((char*)ui.status_message);
+    SERIAL_EOL();
+    delay(5);
+    DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-22, F("..:."));
+
+    DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2 + 5 * STAT_CHR_W, DWIN_HEIGHT-40, (char*)ui.status_message);
+    DWIN_UpdateLCD();
+
     if (ui.has_status()) {
-      DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, F("..:"));
-      DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, &ui.status_message[0]);
+      DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-23, F("...:"));
+      DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2 + 5 * STAT_CHR_W, DWIN_HEIGHT-20, &ui.status_message[0]);
     }
   #endif
 

@@ -30,7 +30,10 @@ void GcodeSuite::M117() {
 
   if (parser.string_arg && parser.string_arg[0])
     ui.set_status(parser.string_arg);
-  else
-    ui.reset_status();
-
+  else {
+    if (ui.has_status()) {
+      SERIAL_ECHOPGM_P(ui.status_message);
+      SERIAL_ECHOLNPGM_P();
+    }
+  }
 }
