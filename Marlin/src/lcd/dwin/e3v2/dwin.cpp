@@ -1835,6 +1835,12 @@ void Draw_Status_Area(const bool with_update) {
     DWIN_Draw_Signed_Float(DWIN_FONT_STAT, Color_Bg_Black, 2, 2, 178, 429, dwin_zoffset * 100);
   #endif
 
+  #if HAS_STATUS_MESSAGE
+    if (ui.has_status()) {
+      DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, (char*)ui.status_message);
+    }
+  #endif
+
   if (with_update) {
     DWIN_UpdateLCD();
     delay(5);
