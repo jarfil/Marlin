@@ -1462,6 +1462,7 @@ void MarlinUI::update() {
       UNUSED(persist);
     #endif
 
+    TERN_(DWIN_CREALITY_LCD, refresh());
     TERN_(EXTENSIBLE_UI, ExtUI::onStatusChanged(status_message));
   }
 

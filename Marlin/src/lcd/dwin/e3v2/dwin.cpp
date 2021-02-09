@@ -1648,7 +1648,9 @@ inline void make_name_without_ext(char *dst, char *src, size_t maxlen=MENU_CHAR_
 
 inline void HMI_SDCardInit() { card.cdroot(); }
 
-void MarlinUI::refresh() { /* Nothing to see here */ }
+void MarlinUI::refresh() {
+  Draw_Status_Area(true);
+}
 
 #define ICON_Folder ICON_More
 
