@@ -1837,7 +1837,7 @@ void Draw_Status_Area(const bool with_update) {
 
   #if HAS_STATUS_MESSAGE
     if (ui.has_status()) {
-      DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, DWIN_HEIGHT-20, (char*)ui.status_message);
+      DWIN_Draw_String(false, true, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STATUS_Y, (char*)ui.status_message);
     }
   #endif
 
